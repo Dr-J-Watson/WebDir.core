@@ -1,0 +1,10 @@
+.env
+
+appli/src/vendor
+api/src/vendor
+
+appli/src/composer.lock
+api/src/composer.lock
+
+appli/src/conf/webdir.db.conf.ini
+api/src/conf/webdir.db.conf.ini

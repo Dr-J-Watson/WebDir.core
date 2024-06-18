@@ -1,0 +1,88 @@
+networks:
+  webdir:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+
+services:
+  #mysql et adminer
+  db:
+    image: mysql:latest
+    container_name: mysql
+    restart: unless-stopped
+    # les variables d'environnement
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DATABASE:-webdir}
+      MYSQL_USER: ${USER:-webdir}
+      MYSQL_PASSWORD: ${PASSWORD:-webdir}
+    ports:
+      - "64990:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      webdir:
+        aliases:
+          - mysql
+
+  # adminer:
+  #   image: adminer
+  #   container_name: adminer
+  #   restart: always
+  #   ports:
+  #     - "64991:8080"
+  #   networks:
+  #     - webdir
+
+  #phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "64991:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    networks:
+      - webdir
+
+  #canals/php pour l'appli
+  php_appli:
+    image: canals/php
+    container_name: php_appli
+    restart: unless-stopped
+    ports:
+      - "64992:80"
+    volumes:
+      - ./appli/public:/var/www/html
+      - ./appli/src:/var/www/src
+    networks:
+      - webdir
+    depends_on:
+      - db
+    
+  #canals/php pour l'api
+  php_api:
+    image: canals/php
+    container_name: php_api
+    restart: unless-stopped
+    ports:
+      - "64993:80"
+    volumes:
+      - ./api/public:/var/www/html
+      - ./api/src:/var/www/src
+    networks:
+      - webdir
+    depends_on:
+      - db
+
+
+  
+        
+    
+    
+    
+

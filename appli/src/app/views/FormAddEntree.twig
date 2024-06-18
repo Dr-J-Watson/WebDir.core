@@ -1,0 +1,57 @@
+{% extends "squelette.twig" %}
+
+{% block content %}
+    <form action="{{ url_for('addPersonnePost') }}" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="lastName">Nom: </label>
+            <input type="text" id="lastName" name="lastName" value="">
+        </div>
+
+        <div>
+            <label for="firstName">Prénom: </label>
+            <input type="text" id="firstName" name="firstName" value="">
+        </div>
+
+        <div>
+            <label for="numBureau"> Numéro de Bureau: </label>
+            <input type="text" id="numBureau" name="numBureau" value="" placeholder="404 ou 404B">
+        </div>
+
+        <div>
+            <label for="telFixe"> Fixe: </label>
+            <input type="tel" id="telFixe" name="telFixe" value="" placeholder="+33#########">
+        </div>
+
+        <div>
+            <label for="telMobile"> Mobile: </label>
+            <input type="tel" id="telMobile" name="telMobile" value="" placeholder="+33#########">
+        </div>
+
+        <div>
+            <label for="email"> Email: </label>
+            <input type="email" id="email" name="email" value="">
+        </div>
+
+        <div>
+            <label for="departement">Service / Departement: </label>
+            <select id="departement" name="departement[]" multiple="yes">
+                <option value="Gardien">test1</option>
+                <option value="Patate">test2</option>
+                <option value="test3">test3</option>
+                <option value="test4">test4</option>
+                <option value="test5">test5</option>
+                <option value="test6">test6</option>
+                <option value="test7">test7</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="image">Photo de profil: </label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg" >
+        </div>
+
+        <div>
+            <button type="submit">Ajouter</button>
+        </div>
+    </form>
+{% endblock %}
