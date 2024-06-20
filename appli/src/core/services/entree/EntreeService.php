@@ -27,4 +27,14 @@ class EntreeService implements EntreeServiceInterface{
     public function getEntree(): array{
         return Entree::all()->toArray();
     }
+
+    public function getEntreeByService($service){
+        return Entree::whereHas('department', function($query) use ($service) {
+            $query->where('nom', $service);
+        })->get()->toArray();
+    }
+
+    public function inBD($entrre){
+        return Entree::where('lastName', $entrre['lastName'])->where('firstName', $entrre['firstName'])->exists();
+    }
 }

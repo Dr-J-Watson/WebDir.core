@@ -9,7 +9,7 @@ class Entree extends Model{
 
     use HasUuids;
 
-    protected $table = 'personne';
+    protected $table = 'entree';
     protected $primaryKey = 'uuid';
     public $timestamps = false;
     public $incrementing = false;

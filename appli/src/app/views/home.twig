@@ -2,29 +2,43 @@
 {% block content %}
     <div>
         <h1>Liste des personnes</h1>
-        <table>
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Numéro de bureau</th>
-                <th>Téléphone fixe</th>
-                <th>Téléphone mobile</th>
-                <th>Email</th>
-            </tr>
-            </thead>
-            <tbody>
+        <form id="researchTab" action="{{ url_for('home') }}" method="post">
+            <select id="departement" name="departement">
+                <option value="tous">Tous</option>
+                {% set departments = [] %}
+                {% for departement in department %}
+                    {% for dep in departement %}
+                        {% if dep.nom not in departments %}
+                            {% set departments = departments|merge([dep.nom]) %}
+                            <option value="{{ dep.nom }}"> {{ dep.nom }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </select>
+            <button type="submit" value="Search">Search</button>
+        </form>
+        <div class="entrees">
             {% for personne in personnes %}
-                <tr>
-                    <td>{{ personne['lastName'] }}</td>
-                    <td>{{ personne['firstName'] }}</td>
-                    <td>{{ personne['numBureau'] }}</td>
-                    <td>{{ personne['telFixe'] }}</td>
-                    <td>{{ personne['telMobile'] }}</td>
-                    <td>{{ personne['email'] }}</td>
-                </tr>
+                <div class="entree">
+                    <p>{{ personne.lastName }}</p>
+                    <p>{{ personne.firstName }}</p>
+                    <p>
+                        {% set departments = [] %}
+                        {% for departement in department %}
+                            {% for dep in departement %}
+                                {% if dep.pivot.entree_id == personne.uuid %}
+                                    {% set departments = departments|merge([dep.nom]) %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        Service/Département: {{ departments|join(', ') }}
+                    </p>
+                    <p>Num bureau: {{ personne.numBureau }}</p>
+                    <p>Mobile 1: {{ personne.telFixe }}</p>
+                    <p>Mobile 2: {{ personne.telMobile }}</p>
+                    <p>Email: {{ personne.email }}</p>
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     </div>
 {% endblock %}
