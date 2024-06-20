@@ -29,8 +29,9 @@ class PostAddEntree extends AbstractAction{
             if($personne['lastName'] !== filter_var($personne['lastName'], FILTER_SANITIZE_SPECIAL_CHARS) ||
                 $personne['firstName'] !== filter_var($personne['firstName'], FILTER_SANITIZE_SPECIAL_CHARS ) ||
                 $personne['numBureau'] !== filter_var($personne['numBureau'], FILTER_SANITIZE_SPECIAL_CHARS ) ||
+                $personne['fonction'] !== filter_var($personne['fonction'], FILTER_SANITIZE_SPECIAL_CHARS ) ||
                 !filter_var($personne['email'], FILTER_VALIDATE_EMAIL ) ||
-                $this->personneService->inBD($personne))
+                $this->personneService->inBD($personne) )
             {
                 throw new \Exception("Erreur de saisie");
             }
@@ -48,7 +49,7 @@ class PostAddEntree extends AbstractAction{
                 $uuid4 = Uuid::uuid4();
 
                 $uploadfile = $uploaddir . $uuid4->toString() . "." . $info->getExtension();
-                if($info->getExtension() !== 'png' || $info->getExtension() !== 'jpg' || $info->getExtension() !== 'jpeg'){
+                if($info->getExtension() !== 'png' and $info->getExtension() !== 'jpg' and $info->getExtension() !== 'jpeg'){
                     throw new \Exception("Erreur ce n'est pas une image");
                 }
 
@@ -67,6 +68,7 @@ class PostAddEntree extends AbstractAction{
                 'telFixe' => $personne['telFixe'],
                 'telMobile' => $personne['telMobile'],
                 'image' => $_FILES["image"]["error"] === 0 ? $image : '',
+                'fonction' => $personne['fonction']
             ];
 
 
